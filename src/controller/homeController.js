@@ -4,8 +4,9 @@ export const handleHomePage = (req, res) => {
    return res.render('home.ejs');
 };
 
-export const handleUserPage = (req, res) => {
-   return res.render('user.ejs');
+export const handleUserPage = async (req, res) => {
+   let users = await getAllUsers();
+   return res.render('user.ejs', { users });
 };
 
 export const handleCreateUser = (req, res) => {
