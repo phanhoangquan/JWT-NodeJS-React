@@ -1,4 +1,4 @@
-import { registerUser } from '../services/loginRegisterService.js';
+import { handleUserLogin, registerUser } from '../services/loginRegisterService.js';
 
 export const handleTestApi = (req, res) => {
    return res.status(200).json({
@@ -27,9 +27,14 @@ export const handleRegister = async (req, res) => {
 };
 
 export const handleLogin = async (req, res) => {
-   console.log(req.body);
-   return res.status(200).json({
-      message: 'ok',
-      data: 'test api login',
-   });
+   try {
+      let data = await handleUserLogin(req.body);
+      return res.status(200).json({
+         EM: data.EM,
+         EC: data.EC,
+         DT: data.DT,
+      });
+   } catch (error) {
+      return res.status(500).json({ EM: 'Internal Server Error', EC: '-1', DT: '' });
+   }
 };
