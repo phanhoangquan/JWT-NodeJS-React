@@ -8,18 +8,17 @@ export const getAllUsers = async () => {
          raw: true,
          nest: true,
       });
-      console.log(users);
       return {
          EM: 'get data success',
          EC: 0,
-         ED: users,
+         DT: users,
       };
    } catch (e) {
       console.log(e);
       return {
          EM: 'something wrong with services',
          EC: 1,
-         ED: [],
+         DT: [],
       };
    }
 };
