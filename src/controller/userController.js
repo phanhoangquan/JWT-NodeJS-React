@@ -1,4 +1,10 @@
-import { getAllUsers, getUserWithPagination, deleteUsers, createNewUsers } from '../services/userApiService';
+import {
+   getAllUsers,
+   getUserWithPagination,
+   deleteUsers,
+   createNewUsers,
+   updateUsers,
+} from '../services/userApiService';
 
 export const handleRead = async (req, res) => {
    try {
@@ -49,6 +55,13 @@ export const handleCreate = async (req, res) => {
 };
 export const handleUpdate = async (req, res) => {
    try {
+      //validate
+      let data = await updateUsers(req.body);
+      return res.status(200).json({
+         EM: data.EM,
+         EC: data.EC,
+         DT: data.DT,
+      });
    } catch (error) {
       console.log(error);
       return res.status(500).json({

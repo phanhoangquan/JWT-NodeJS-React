@@ -30,8 +30,8 @@ export const getUserWithPagination = async (page, limit) => {
       const { count, rows } = await db.User.findAndCountAll({
          offset: offset,
          limit: limit,
-         attributes: ['id', 'username', 'email', 'phone', 'sex'],
-         include: { model: db.Group, attributes: ['name', 'description'] },
+         attributes: ['id', 'username', 'email', 'phone', 'address', 'sex'],
+         include: { model: db.Group, attributes: ['name', 'description', 'id'] },
          order: [['id', 'DESC']],
       });
       let totalPages = Math.ceil(count / limit);
@@ -93,11 +93,34 @@ export const createNewUsers = async (data) => {
 
 export const updateUsers = async (data) => {
    try {
+      if (!data.groupId) {
+         return {
+            EM: 'Error with empty groupID',
+            EC: 1,
+            DT: 'group',
+         };
+      }
       let user = await db.User.findOne({ where: { id: data.id } });
       if (user) {
          //update
+         await user.update({
+            username: data.username,
+            address: data.address,
+            sex: data.sex,
+            groupId: data.groupId,
+         });
+         return {
+            EM: 'Update User Success',
+            EC: 0,
+            DT: '',
+         };
       } else {
          //not found user
+         return {
+            EM: 'User not found',
+            EC: 2,
+            DT: '',
+         };
       }
    } catch (e) {}
 };
